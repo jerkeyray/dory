@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jerkeyray/dory/internal/ffmpeg"
 	"github.com/spf13/cobra"
@@ -27,15 +28,42 @@ to quickly create a Cobra application.`,
 		}	
 
 		filepath := args[0]
-		infoJSON, err := ffmpeg.GetInfo(filepath)
+		info, err := ffmpeg.GetInfo(filepath)
 		if err != nil {
 			fmt.Printf("Error running ffprobe: %v\n", err)
 			return 
 		}
 
-		fmt.Println(string(infoJSON))
+		// find the video and audio streams
+		var videoStream ffmpeg.Stream
+		var audioStream ffmpeg.Stream
+
+		for _, stream := range info.Stream {
+			if stream.CodecType == "video" {
+				videoStream = stream
+			} else if stream.CodecType == "audio" {
+				audioStream = stream
+			}
+		}
+
+		// Print the clean report
+		fmt.Println("--- Media Information ---")
+		// Extract just the filename from the full path for cleaner output
+		fileName := info.Format.Filename[strings.LastIndex(info.Format.Filename, "/")+1:]
+		fmt.Printf("File:        %s\n", fileName)
+		fmt.Printf("Duration:    %.2fs\n", parseDuration(info.Format.Duration))
+		fmt.Printf("Resolution:  %dx%d\n", videoStream.Width, videoStream.Height)
+		fmt.Printf("Video Codec: %s\n", videoStream.CodecName)
+		fmt.Printf("Audio Codec: %s\n", audioStream.CodecName)
 	},
 }
+
+func parseDuration(s string) float64 {
+	var f float64
+	fmt.Sscanf(s, "%f", &f)
+	return f
+}
+
 
 func init() {
 	rootCmd.AddCommand(infoCmd)
