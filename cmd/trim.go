@@ -47,7 +47,7 @@ dory trim original.mp4 clip.mp4 --start 00:01:30 --end 00:02:00`,
 			return
 		}
 
-		fmt.Printf("Video trimmed successfully!, find it at: %s\n", outputFile)
+		fmt.Printf("Video trimmed successfully!: %s\n", outputFile)
 	},
 }
 
