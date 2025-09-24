@@ -103,3 +103,15 @@ func BuildGifArgs(opts GifOptions) []string {
 		opts.OutputPath,
 	}
 }
+
+// BuildExtractAudioArgs creates the command to extract audio.
+func BuildExtractAudioArgs(inputPath, outputPath string) []string {
+	return []string{
+		"-i", inputPath,
+		"-vn",       // -vn tells FFmpeg to ignore the video stream.
+		"-q:a", "0", // -q:a 0 is a high-quality setting for VBR MP3s.
+		"-map", "a", // -map a ensures only the audio stream is processed.
+		"-y", // Overwrite output
+		outputPath,
+	}
+}
