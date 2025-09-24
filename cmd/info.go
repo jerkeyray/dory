@@ -23,6 +23,7 @@ var infoCmd = &cobra.Command{
 
 Example usage:
 	dory info <filepath>`,
+	Args: cobra.ExactArgs(1), // expects exactly 1 argument: the input file path
 
 	Run: func(cmd *cobra.Command, args []string) {
 		// check if filepath argument is provided
