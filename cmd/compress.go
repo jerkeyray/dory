@@ -16,8 +16,8 @@ var profile string
 var compressCmd = &cobra.Command{
 	Use:   "compress [input_file] [output_file]",
 	Short: "Compresses a video to a smaller file size",
-	Long:  `Re-encodes a video to a smaller file size using predefined quality profiles.`,	
-	Args: cobra.ExactArgs(2), // expects exactly 2 arguments: input and output file paths
+	Long:  `Re-encodes a video to a smaller file size using predefined quality profiles.`,
+	Args:  cobra.ExactArgs(2), // expects exactly 2 arguments: input and output file paths
 	Run: func(cmd *cobra.Command, args []string) {
 		inputFile := args[0]
 		outputFile := args[1]
@@ -42,17 +42,17 @@ var compressCmd = &cobra.Command{
 		}
 
 		// Add the crucial -progress flag
-    // We send progress to stdout by using a pipe. "pipe:1" is stdout.
-    finalArgs := append([]string{"-progress", "pipe:1"}, ffmpegArgs...)
+		// We send progress to stdout by using a pipe. "pipe:1" is stdout.
+		finalArgs := append([]string{"-progress", "pipe:1"}, ffmpegArgs...)
 
-    // 3. Execute with the new progress bar runner
-    err = ffmpeg.RunWithProgress(info, finalArgs)
-    if err != nil {
-        fmt.Printf("Error compressing video: %v\n", err)
-        return
-    }
+		// 3. Execute with the new progress bar runner
+		err = ffmpeg.RunWithProgress(info, finalArgs)
+		if err != nil {
+			fmt.Printf("Error compressing video: %v\n", err)
+			return
+		}
 
-    fmt.Println("\nVideo compressed successfully!")
+		fmt.Println("\nVideo compressed successfully!")
 
 	},
 }

@@ -62,50 +62,50 @@ func Run(args []string) error {
 // RunWithProgress executes an ffmpeg command and shows a progress bar
 // totalDuration is the total duration of the video in seconds needed to set the progress bar max
 func RunWithProgress(info *ProbeResult, args []string) error {
-    // Get the total duration from the info struct.
-    totalDuration, err := strconv.ParseFloat(info.Format.Duration, 64)
-    if err != nil {
-        return fmt.Errorf("could not parse video duration: %w", err)
-    }
+	// Get the total duration from the info struct.
+	totalDuration, err := strconv.ParseFloat(info.Format.Duration, 64)
+	if err != nil {
+		return fmt.Errorf("could not parse video duration: %w", err)
+	}
 
-    // build the ffmpeg command
-    cmd := exec.Command("ffmpeg", args...)
+	// build the ffmpeg command
+	cmd := exec.Command("ffmpeg", args...)
 
-    // Create a pipe to read FFmpeg's stdout
-    stdout, err := cmd.StdoutPipe()
-    if err != nil {
-        return fmt.Errorf("failed to create stdout pipe: %w", err)
-    }
-    cmd.Stderr = io.Discard // Redirect stderr to /dev/null
+	// Create a pipe to read FFmpeg's stdout
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return fmt.Errorf("failed to create stdout pipe: %w", err)
+	}
+	cmd.Stderr = io.Discard // Redirect stderr to /dev/null
 
-    // Start the command
-    if err := cmd.Start(); err != nil {
-        return fmt.Errorf("failed to start ffmpeg: %w", err)
-    }
+	// Start the command
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("failed to start ffmpeg: %w", err)
+	}
 
-    // Initialize progress bar
-    // Creates a progress bar that goes from 0 to totalDuration.
-    // Customizes how it looks ([=====> ]).
-    // Adds a description (Compressing...)
-    bar := progressbar.NewOptions(int(totalDuration),
-        progressbar.OptionSetDescription("Compressing..."),
-        progressbar.OptionSetTheme(progressbar.Theme{
-            Saucer:        "█",
-            SaucerHead:    "█",
-            SaucerPadding: "░",
-            BarStart:      "|",
-            BarEnd:        "|",
-        }))
+	// Initialize progress bar
+	// Creates a progress bar that goes from 0 to totalDuration.
+	// Customizes how it looks ([=====> ]).
+	// Adds a description (Compressing...)
+	bar := progressbar.NewOptions(int(totalDuration),
+		progressbar.OptionSetDescription("Compressing..."),
+		progressbar.OptionSetTheme(progressbar.Theme{
+			Saucer:        "█",
+			SaucerHead:    "█",
+			SaucerPadding: "░",
+			BarStart:      "|",
+			BarEnd:        "|",
+		}))
 
-    // Read progress from stdout in a separate goroutine
-    go parseProgress(stdout, bar)
+	// Read progress from stdout in a separate goroutine
+	go parseProgress(stdout, bar)
 
-    // Wait for the command to finish
-    if err := cmd.Wait(); err != nil {
-        return fmt.Errorf("ffmpeg command failed: %w", err)
-    }
+	// Wait for the command to finish
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("ffmpeg command failed: %w", err)
+	}
 
-    return nil
+	return nil
 }
 
 // launch ffmpeg and read its live progress output
@@ -115,15 +115,15 @@ func RunWithProgress(info *ProbeResult, args []string) error {
 
 // parseProgress reads ffmpeg output line by line and updates the progress bar
 func parseProgress(stdout io.Reader, bar *progressbar.ProgressBar) {
-    scanner := bufio.NewScanner(stdout)
-    for scanner.Scan() {
-        line := scanner.Text()
-        if strings.Contains(line, "out_time_ms=") {
-            timeStr := strings.Split(line, "=")[1]
-            if ms, err := strconv.ParseInt(timeStr, 10, 64); err == nil {
-                seconds := ms / 1_000_000 // Convert microseconds to seconds
-                bar.Set(int(seconds))
-            }
-        }
-    }
+	scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.Contains(line, "out_time_ms=") {
+			timeStr := strings.Split(line, "=")[1]
+			if ms, err := strconv.ParseInt(timeStr, 10, 64); err == nil {
+				seconds := ms / 1_000_000 // Convert microseconds to seconds
+				bar.Set(int(seconds))
+			}
+		}
+	}
 }
