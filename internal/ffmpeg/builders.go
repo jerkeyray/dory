@@ -115,3 +115,15 @@ func BuildExtractAudioArgs(inputPath, outputPath string) []string {
 		outputPath,
 	}
 }
+
+// BuildConcatArgs creates the command to concatenate videos from a file list.
+func BuildConcatArgs(tempFilePath, outputPath string) []string {
+	return []string{
+		"-f", "concat", // Use the concat demuxer.
+		"-safe", "0", // Needed for security when using file paths.
+		"-i", tempFilePath, // The input is the text file itself.
+		"-c", "copy", // Copy streams without re-encoding (fast).
+		"-y", // Overwrite output
+		outputPath,
+	}
+}
