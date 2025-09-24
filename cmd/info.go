@@ -14,30 +14,36 @@ import (
 // infoCmd represents the info command
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Gives information about a media file",
+	Long: `Provides a summary of key information about a media file, including:
+- Duration
+- Resolution
+- Video Codec
+- Audio Codec
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Example usage:
+	dory info <filepath>`,
+
 	Run: func(cmd *cobra.Command, args []string) {
+		// check if filepath argument is provided
 		if len(args) == 0 {
 			fmt.Println("Error: please provide a filepath.")
-			return 
-		}	
+			return
+		}
 
+		// filepath is the first argument and get media info using ffprobe
 		filepath := args[0]
 		info, err := ffmpeg.GetInfo(filepath)
 		if err != nil {
 			fmt.Printf("Error running ffprobe: %v\n", err)
-			return 
+			return
 		}
 
 		// find the video and audio streams
 		var videoStream ffmpeg.Stream
 		var audioStream ffmpeg.Stream
 
+		// Iterate through the streams to find video and audio
 		for _, stream := range info.Stream {
 			if stream.CodecType == "video" {
 				videoStream = stream
@@ -63,7 +69,6 @@ func parseDuration(s string) float64 {
 	fmt.Sscanf(s, "%f", &f)
 	return f
 }
-
 
 func init() {
 	rootCmd.AddCommand(infoCmd)

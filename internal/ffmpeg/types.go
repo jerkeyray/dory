@@ -2,8 +2,8 @@ package ffmpeg
 
 // ProbeResults represents the top-level structure of ffmprobe's JSON output
 type ProbeResult struct {
-	Format Format    `json:"format"`
-	Stream []Stream  `json:"streams"`
+	Format Format   `json:"format"`
+	Stream []Stream `json:"streams"`
 }
 
 // Format hold information about the container format
