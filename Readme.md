@@ -28,6 +28,16 @@ go install github.com/jerkeyray/dory@latest
 
 Make sure you have Go installed and your `$GOPATH/bin` is in your system PATH.
 
+If the `dory` command is not found after installation, add Go's bin directory to your PATH:
+
+```bash
+# Add this line to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
+
+# Then reload your shell or run:
+source ~/.zshrc
+```
+
 ## Usage
 
 ### Compress Videos
