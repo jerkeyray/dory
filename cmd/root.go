@@ -12,16 +12,33 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dory",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "A fast, user-friendly command-line video processing tool",
+	Long: `Dory is a command-line video processing tool built with Go that provides
+a simple interface to common video operations using FFmpeg under the hood.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+Available Commands:
+  compress      Reduce video file sizes with quality profiles
+  trim          Extract specific segments from videos  
+  concat        Join multiple video files into one
+  gif           Create animated GIFs from video clips
+  extract-audio Extract audio tracks from videos
+  info          Display video metadata and properties
+
+Use Cases:
+  • Compress large videos for sharing or storage
+  • Create short clips from longer videos
+  • Combine multiple video segments
+  • Generate GIFs for social media or documentation
+  • Extract music or audio from video files
+  • Check video properties before processing
+
+Examples:
+  dory compress input.mp4 output.mp4 --profile 720p
+  dory trim video.mp4 clip.mp4 --start 00:01:30 --end 00:02:45
+  dory concat output.mp4 part1.mp4 part2.mp4 part3.mp4
+  dory gif input.mp4 output.gif --start 00:00:10 --duration 3
+  dory extract-audio video.mp4 audio.mp3
+  dory info video.mp4`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -34,13 +51,5 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dory.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

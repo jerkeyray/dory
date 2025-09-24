@@ -1,8 +1,10 @@
- ____   ___  ______   __
-|  _ \ / _ \|  _ \ \ / /
-| | | | | | | |_) \ V / 
-| |_| | |_| |  _ < | |  
-|____/ \___/|_| \_\|_|  
+```
+ ____   ___  _____  __   __
+|  _ \ / _ \|  __ \ \ \ / /
+| | | | | | | |__) | \ V /
+| |_| | |_| |  _  /   | |
+|____/ \___/|_| \_\   |_|
+```
 
 A fast, user-friendly command-line video processing tool built with Go. Dory provides a simple interface to common video operations using FFmpeg under the hood, featuring progress bars and optimized performance for everyday video editing tasks.
 
@@ -16,44 +18,15 @@ A fast, user-friendly command-line video processing tool built with Go. Dory pro
 - **Media Information**: Display detailed metadata about video files
 - **Fast Performance**: Leverages stream copying where possible to avoid re-encoding
 
-## Prerequisites
-
-Dory requires FFmpeg to be installed on your system:
-
-### macOS
-
-```bash
-brew install ffmpeg
-```
-
-### Ubuntu/Debian
-
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
-
-### Windows
-
-Download from [ffmpeg.org](https://ffmpeg.org/download.html) or use:
-
-```powershell
-winget install ffmpeg
-```
-
 ## Installation
 
-### From Source
+Install the latest release using Go:
 
 ```bash
-git clone https://github.com/jerkeyray/dory.git
-cd dory
-go build -o dory .
+go install github.com/jerkeyray/dory@latest
 ```
 
-### Binary Release
-
-Download the latest binary from the [releases page](https://github.com/jerkeyray/dory/releases).
+Make sure you have Go installed and your `$GOPATH/bin` is in your system PATH.
 
 ## Usage
 
