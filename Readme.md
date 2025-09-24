@@ -1,4 +1,8 @@
-# Dory
+ ____   ___  ______   __
+|  _ \ / _ \|  _ \ \ / /
+| | | | | | | |_) \ V / 
+| |_| | |_| |  _ < | |  
+|____/ \___/|_| \_\|_|  
 
 A fast, user-friendly command-line video processing tool built with Go. Dory provides a simple interface to common video operations using FFmpeg under the hood, featuring progress bars and optimized performance for everyday video editing tasks.
 
